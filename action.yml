@@ -31,9 +31,7 @@ runs:
         Invoke-WebRequest "https://github.com/AutoHotkey/Ahk2Exe/releases/download/$tag/$tag.zip" -Out "ahk.zip"
         Expand-Archive "ahk.zip" -Force
         $scriptDir = Get-Location
-        $compileExe = Join-Path -Path (Join-Path -Path $scriptDir -ChildPath "ahk") -ChildPath "Ahk2Exe.exe"
-        Write-Host $compileExe
-        
+        $compileExe = Join-Path -Path (Join-Path -Path $scriptDir -ChildPath "ahk") -ChildPath "Ahk2Exe.exe"        
         
         $file = "AutoHotkey_$($compileTag -replace '^v', '').zip"
         Invoke-WebRequest "https://github.com/AutoHotkey/AutoHotkey/releases/download/$compileTag/$file" -Out "ahk.zip"
@@ -47,8 +45,7 @@ runs:
         if($outName -ne ''){
           $argList += "/out $outName"
         }
-
-        Write-Host $compileExe
+        
         Start-Process -FilePath $compileExe -ArgumentList $argList
 
 branding:
