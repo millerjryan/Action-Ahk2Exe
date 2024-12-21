@@ -12,7 +12,7 @@ inputs:
   version:
     description: Version to compile with, as a Github tag
     required: false
-    default: v2.0.18 # TODO: latest
+    default: "v2.0.18" # TODO: latest
   bits:
     description: Compiler bit count (also specify U before bits for unicode, v1 only)
     required: false
