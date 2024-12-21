@@ -25,7 +25,7 @@ runs:
       shell: pwsh
       run: |
         # https://gist.github.com/MarkTiedemann/c0adc1701f3f5c215fc2c2d5b1d5efd3
-        $compileTag = "${{inputs.tag}}"
+        $compileTag = "${{inputs.version}}"
         $releases = "https://api.github.com/repos/AutoHotkey/Ahk2Exe/releases"
         $tag = (Invoke-WebRequest $releases | ConvertFrom-Json)[0].tag_name
         Invoke-WebRequest "https://github.com/AutoHotkey/Ahk2Exe/releases/download/$tag/$tag.zip" -Out "ahk.zip"
