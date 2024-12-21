@@ -32,6 +32,7 @@ runs:
         Expand-Archive "ahk.zip" -Force
         $scriptDir = Get-Location
         $compileExe = Join-Path -Path (Join-Path -Path $scriptDir -ChildPath "ahk") -ChildPath "Ahk2Exe.exe"
+        Write-Host $compileExe
         
         
         $file = "AutoHotkey_$($compileTag -replace '^v', '').zip"
@@ -49,7 +50,8 @@ runs:
         if($outName -ne ''){
           $argList += "/out $outName"
         }
-        
+
+        Write-Host $compileExe
         Start-Process -FilePath $compileExe -ArgumentList $argList
 
 branding:
