@@ -1,0 +1,57 @@
+name: Compile AHK Script
+description: Compile both v1 and v2 AutoHotkey scripts using Ahk2Exe from Github
+author: Banaanae
+
+inputs:
+  in:
+    description: Name (and path if not root) of file to compile
+    required: true
+  out:
+    description: Name (and path if not root) to give the compiled script
+    required: false
+  version:
+    description: Version to compile with, as a Github tag
+    required: false
+    default: v2.0.18 # TODO: latest
+  bits:
+    description: Compiler bit count (also specify U before bits for unicode, v1 only)
+    required: false
+    default: 64
+
+runs:
+  using: composite
+  steps:
+    - name: Install AutoHoeykey and Ahk2Exe
+      shell: pwsh
+      run: |
+        # https://gist.github.com/MarkTiedemann/c0adc1701f3f5c215fc2c2d5b1d5efd3
+        $compileTag = "${{inputs.tag}}"
+        $releases = "https://api.github.com/repos/AutoHotkey/Ahk2Exe/releases"
+        $tag = (Invoke-WebRequest $releases | ConvertFrom-Json)[0].tag_name
+        Invoke-WebRequest "https://github.com/AutoHotkey/Ahk2Exe/releases/download/$tag/$tag.zip" -Out "ahk.zip"
+        Expand-Archive "ahk.zip" -Force
+        $scriptDir = Get-Location
+        $compileExe = Join-Path -Path (Join-Path -Path $scriptDir -ChildPath "ahk") -ChildPath "Ahk2Exe.exe"
+        
+        
+        $file = "AutoHotkey_$($compileTag -replace '^v', '').zip"
+        Invoke-WebRequest "https://github.com/AutoHotkey/AutoHotkey/releases/download/$compileTag/$file" -Out "ahk.zip"
+        Expand-Archive "ahk.zip" -Force
+
+    - name: Build Script
+      shell: pwsh
+      run: |
+        $compileName = "${{inputs.in}}"
+        $outName = "${{inputs.out}}"
+        $bits = "${{inputs.bits}}"
+        
+        $argList = "/base .\ahk\AutoHotkey$bits.exe /in $compileName"
+        if($outName -ne ''){
+          $argList += "/out $outName"
+        }
+        
+        Start-Process -FilePath $compileExe -ArgumentList $argList
+
+branding:
+  color: blue
+  icon: file-plus
