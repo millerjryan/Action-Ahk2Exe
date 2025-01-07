@@ -43,7 +43,7 @@ runs:
         
         $argList = "/base .\ahk\AutoHotkey$bits.exe /in $compileName"
         if($outName -ne ''){
-          $argList += "/out $outName"
+          $argList += " /out $outName"
         }
         
         Start-Process -FilePath $compileExe -ArgumentList $argList
