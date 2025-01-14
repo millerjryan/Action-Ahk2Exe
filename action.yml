@@ -13,6 +13,9 @@ inputs:
     description: Version to compile with, as a Github tag
     required: false
     default: "v2.0.18" # TODO: latest
+  icon:
+    description: Icon Name in Repo
+    required: false
   bits:
     description: Compiler bit count (also specify U before bits for unicode, v1 only)
     required: false
@@ -40,10 +43,14 @@ runs:
         $compileName = "${{inputs.in}}"
         $outName = "${{inputs.out}}"
         $bits = "${{inputs.bits}}"
+        $icon = "${{inputs.icon}}"
         
         $argList = "/base .\ahk\AutoHotkey$bits.exe /in $compileName"
         if($outName -ne ''){
           $argList += " /out $outName"
+        }
+        if($icon -ne ''){
+          $argList += " /icon $icon"
         }
         
         Start-Process -FilePath $compileExe -ArgumentList $argList
