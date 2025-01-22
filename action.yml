@@ -55,6 +55,7 @@ runs:
         }
         
         Start-Process -FilePath $compileExe -ArgumentList $argList
+        Get-Location
 
 branding:
   color: blue
